@@ -7,3 +7,4 @@ docker rm go_bandit
 
 docker run -v /Users/ogawashouhei/Documents/project/go_bandit/src:/go/src -it --name go_bandit go_bandit /bin/bash
 
+go run src/go_bandit/*.go
