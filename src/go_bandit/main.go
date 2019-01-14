@@ -2,35 +2,26 @@ package main
 
 import (
 	"log"
-	"./bernoulliarm"
 )
 
-//type Bandit struct{
-//	
-//}
-
-
 func foo() {
-    log.Print("Hello world from foo!")
-}
-
-func bar() {
-    log.Print("Hello world from bar!")
+	log.Print("Hello world from foo!")
 }
 
 func main() {
 	foo()
-    //bar()
 
-	var arms bernoulliarm.BernoulliArms
+	var arms BernoulliArms
 	probs := [2]float64{0.4, 0.8}
-	for _, p := range probs{
-		arms = append(arms, bernoulliarm.BernoulliArm{p})
+	for _, p := range probs {
+		arms = append(arms, BernoulliArm{p})
 	}
 
-	log.Println("My favorite number is", arms)	
-	log.Println("My favorite number is", arms[0])	
-	log.Println("My favorite number is", arms[0].Draw())
+	bandit := Bandit{}
+	bandit.Initialize("EG", len(arms), 0.2)
+	a, b, c := bandit.test_algorithm(arms, 50, 500)
+	log.Print(a)
+	log.Print(b)
+	log.Print(c)
 
 }
-
