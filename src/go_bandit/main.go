@@ -5,8 +5,6 @@ import (
 	"net/http"
 	"html/template"
 	"sync"
-	"path/filepath"
-
 )
 
 type templateHandler struct{
@@ -18,8 +16,7 @@ type templateHandler struct{
 func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request){
 	t.once.Do(func(){
 		t.templ =
-		template.Must(template.ParseFiles(filepath.Join("templates",
-		t.filename)))
+		template.Must(template.ParseFiles(t.filename))
 	})
 	t.templ.Execute(w, nil)
 }
@@ -44,8 +41,8 @@ func test(){
 func main() {
 	//test()
 	
-	http.Handle("/img/", http.StripPrefix("/img/", http.FileServer(http.Dir("img/"))))
-	http.Handle("/", &templateHandler{filename: "index.html"})
+	http.Handle("/resources/", http.StripPrefix("/resources/", http.FileServer(http.Dir("resources/"))))
+	http.Handle("/", &templateHandler{filename: "resources/templates/index.html"})
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal("ListenAndServe:", err)
 	}
