@@ -1,10 +1,3 @@
-var app6 = new Vue({
-    el: '#app-6',
-    data: {
-        message: 'Hello!'
-    }
-})
-
 var app_ = new Vue({ 
     el: '#app_',
     data:{
