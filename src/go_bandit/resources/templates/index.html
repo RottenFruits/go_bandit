@@ -9,10 +9,10 @@
 <body>
     <div id="app_">
         <div>
-            <img v-bind:src="treasure.link" width="100" v-for="treasure in treasures"></img>
+            <img v-bind:src="treasure.link" width="100" v-show=treasure.visible v-for="treasure in treasures"></img>
         </div>
         <div>
-            <input type="text" v-model:value="arm_prob.prob" size="15" v-for="arm_prob in arm_probs"></input>            
+            <input type="text" v-model:value="arm_prob.prob" size="15" v-show=arm_prob.visible v-for="arm_prob in arm_probs"></input>            
         </div>
 
         <span>Number of arms</span>
