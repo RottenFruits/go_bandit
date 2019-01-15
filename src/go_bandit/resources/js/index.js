@@ -20,7 +20,9 @@ var app_ = new Vue({
     },
     methods:{
         start:function(){
+            console.log("start")
             this.start_flag = true
+
             n_arms = Number(this.selected)
             config = {
                 headers:{
@@ -32,21 +34,20 @@ var app_ = new Vue({
               
               url = "http://localhost:8080/a"
       
-              axios.post(url,{
-                  n_arms:n_arms, 
-                  arm_probs:this.arm_probs
-                },
-                config)
-              .then(function(res){
-                app.result = res.data
-                console.log(res)
-              })
-              .catch(function(res){
-      　　　　　　app.result = res.data
-                console.log(res)
-              })
+                axios.post(url,{
+                    n_arms:n_arms, 
+                    arm_probs:this.arm_probs
+                  },
+                  config)
+                .then(function(res){
+                  app.result = res.data
+                  console.log(res)
+                })
+                .catch(function(error){
+                  console.log(error)
+                })  
 
-            console.log("start")
+            
         },
         stop:function(){
             this.start_flag = false

@@ -64,6 +64,7 @@ func test(w http.ResponseWriter, r *http.Request) {
 func handler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "Hello World from Go.")
 
+	
 	//Validate request
 	if r.Method != "POST" {
 		w.WriteHeader(http.StatusBadRequest)
@@ -88,23 +89,34 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-
 	//parse json
 	var jsonBody map[string]interface{}
+
 	err = json.Unmarshal(body[:length], &jsonBody)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 	log.Print(jsonBody)
-
+	log.Print(jsonBody)
+	
 	//test(w, r)
+}
+
+type Result struct {
+    N_arms     int  `json:"n_arms"`
+    Arm_probs   struct {
+        Prob      float64 `json:"prob"`
+        Key int `json:"key"`
+        Visible     bool `json:"visible"`
+	} `json:"arm_probs"`
 }
 
 func main() {
 	//test()
 
 	http.HandleFunc("/a", handler)
+	//http.HandleFunc("/bandit", handler)
 	http.Handle("/resources/", http.StripPrefix("/resources/", http.FileServer(http.Dir("resources/"))))
 	http.Handle("/", &templateHandler{filename: "resources/templates/index.html"})
 	if err := http.ListenAndServe(":8080", nil); err != nil {
