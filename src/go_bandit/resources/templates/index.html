@@ -1,19 +1,70 @@
 <html>
-    <head>
-        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    </head>
-    <body>        
-        <img src="/resources/images/character_game_mimic.png">
 
-        <div id="app">
-                {{`{{message}}`}}
+<head>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/jquery"></script>
+</head>
+
+<body>
+    <div id="app_">
+        <div>
+            <!-- <template v-for="n in selected">
+                <treasure></treasure>
+                <arm-prob></arm-prob>
+            </template> -->
+            <treasure v-for="treasure in treasures"></treasure>
         </div>
-        
-        <div id="app-6">
-                <p>{{`{{message}}`}}</p>
-                <input v-model="message">
+        <div>
+            <arm-prob v-for="arm_prob in arm_probs"></arm-prob>
+            <input type="text" v-for="arm_prob in arm_probs" size="15">
+        </input>
         </div>
 
-        <script src="/resources/js/index.js"></script>
-    </body>
+        <span>Number of arms</span>
+        <select v-model="selected" v-on:change="number_of_arms_select">
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+
+        <div>
+            <template v-if="start_flag == false">
+                <button v-on:click="start">Start</button>
+            </template>
+            <template v-else>
+                <button v-on:click="stop">Stop</button>
+            </template>
+            <button v-on:click="clear">Clear</button>
+        </div>
+    </div>
+
+
+    <div id="app">
+        <div>
+            <p>URL</p>
+            <input type="text" id="url" v-model="url" size="60">
+        </div>
+        <div>
+            <p>PARAM</p>
+            <input type="text" id="param" v-model="param" size="60">
+        </div>
+        <div>
+            <button v-on:click="post">POST</button>
+        </div>
+        <div>
+            <p>RESULT</p>
+            <textarea v-model="result" cols="60" rows="10"></textarea>
+        </div>
+    </div>
+
+    <div id="app-6">
+        <p>{{`{{message}}`}}</p>
+        <input v-model="message">
+    </div>
+
+    <script src="/resources/js/index.js"></script>
+</body>
+
 </html>
