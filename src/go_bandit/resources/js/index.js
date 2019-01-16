@@ -23,7 +23,12 @@ var app_ = new Vue({
             console.log("start")
             this.start_flag = true
 
+            //prameter cast
             n_arms = Number(this.selected)
+            for(i = 0; i < this.arm_parameters.length; i++){
+                this.arm_parameters[i]["prob"] = parseFloat(this.arm_parameters[i]["prob"])
+            }
+            
             config = {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
