@@ -14,6 +14,12 @@ type Bandit struct {
 	Values    []float64
 }
 
+type banditResults struct {
+	Chosen_arms        []int     `json:chosen_arms`
+	Rewards            []float64 `json:rewards`
+	Cumulative_rewards []float64 `json:cumulative_rewards`
+}
+
 func (b *Bandit) Initialize(algorithm string, n int, epsilon float64) {
 	b.Algorithm = algorithm
 	b.Epsilon = epsilon
@@ -54,10 +60,8 @@ func (b *Bandit) Update(chosen_arm int, reward float64) {
 	b.Values[chosen_arm] = new_value
 }
 
-func (b Bandit) Test_algorithm(arms BernoulliArms, num_sims int, horizon int) ([]int, []float64, []float64) {
-	chosen_arms := []int{}
-	rewards := []float64{}
-	cumulative_rewards := []float64{}
+func (b Bandit) Test_algorithm(arms BernoulliArms, num_sims int, horizon int) banditResults {
+	var bandit_results banditResults
 
 	for i := 0; i < num_sims; i++ {
 		b.Clear()
@@ -65,36 +69,34 @@ func (b Bandit) Test_algorithm(arms BernoulliArms, num_sims int, horizon int) ([
 		for j := 0; j < horizon; j++ {
 			index := i*horizon + j
 			chosen_arm := b.Select_arm()
-			chosen_arms = append(chosen_arms, chosen_arm)
+			bandit_results.Chosen_arms = append(bandit_results.Chosen_arms, chosen_arm)
 
 			reward := arms[chosen_arm].Draw()
-			rewards = append(rewards, reward)
+			bandit_results.Rewards = append(bandit_results.Rewards, reward)
 
 			if j == 0 {
-				cumulative_rewards = append(cumulative_rewards, reward)
+				bandit_results.Cumulative_rewards = append(bandit_results.Cumulative_rewards, reward)
 			} else {
-				cumulative_rewards = append(cumulative_rewards, cumulative_rewards[index-1]+reward)
+				bandit_results.Cumulative_rewards = append(bandit_results.Cumulative_rewards, bandit_results.Cumulative_rewards[index-1]+reward)
 			}
 			b.Update(chosen_arm, reward)
 		}
 	}
 
-	return chosen_arms, rewards, cumulative_rewards
+	return bandit_results
 }
 
 func Do_bandit(n_arms int, probs []float64, epsilon float64, num_sims int, horizon int) {
 	var arms BernoulliArms
 
 	for i, p := range probs {
-		if i < n_arms{
+		if i < n_arms {
 			arms = append(arms, BernoulliArm{p})
 		}
 	}
 
 	bandit := Bandit{}
 	bandit.Initialize("EG", len(arms), epsilon)
-
-	a, b, c := bandit.Test_algorithm(arms, num_sims, horizon)
-	var res = banditResults{a, b, c}
-	log.Print(res)
+	bandit_results := bandit.Test_algorithm(arms, num_sims, horizon)
+	log.Print(bandit_results)
 }

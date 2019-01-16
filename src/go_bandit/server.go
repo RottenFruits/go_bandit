@@ -17,7 +17,7 @@ type templateHandler struct {
 }
 
 type allParameter struct {
-	N_arms    int            `json:"n_arms"`
+	N_arms       int            `json:"n_arms"`
 	ArmPrameters []armPrameters `json:"arm_parameters"`
 }
 

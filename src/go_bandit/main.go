@@ -5,12 +5,6 @@ import (
 	"net/http"
 )
 
-type banditResults struct {
-	a []int     `json:a`
-	b []float64 `json:b`
-	c []float64 `json:c`
-}
-
 func main() {
 	Do_bandit(2, []float64{0.1, 0.5}, 0.2, 10, 10)
 
