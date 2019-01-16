@@ -22,15 +22,16 @@ var app_ = new Vue({
         bandit_results: [
             { chosen_arms: [], rewards: [], cumulative_rewards: [] }
         ],
-        bandit: [{
+        bandit: [
+            {
             algorithm: "EG",
             epsilon: 0.8,
             n: 2,
             counts: [0, 0, 0, 0, 0],
-            values: [0, 0, 0, 0, 0]
-        }
+            values: [0, 0, 0, 0, 0],
+            arm_rewards: [0, 0, 0, 0, 0]
+            }
         ]
-
     },
     methods: {
         start: function () {
@@ -62,18 +63,19 @@ var app_ = new Vue({
                 config)
                 .then(function (res) {
                     //update results
-                    for (i = 0; i < res.data.bandit[0].Counts.length; i++) {
-                        app_.bandit[0].counts[i] = res.data.bandit[0].Counts[i]
-                        app_.bandit[0].values[i] = res.data.bandit[0].Values[i]
+                    for (i = 0; i < res.data.bandit[0].counts.length; i++) {
+                        app_.bandit[0].counts[i] = res.data.bandit[0].counts[i]
+                        app_.bandit[0].values[i] = res.data.bandit[0].values[i]
+                        app_.bandit[0].arm_rewards[i] = res.data.bandit[0].arm_rewards[i]
                     }
-                    app_.bandit_results[0].chosen_arms = res.data.bandit_results[0].Chosen_arms
-                    app_.bandit_results[0].rewards = res.data.bandit_results[0].Rewards
-                    app_.bandit_results[0].cumulative_rewards = res.data.bandit_results[0].Cumulative_rewards
+                    n_counts = res.data.bandit_results[0].chosen_arms.length
+                    app_.bandit_results[0].chosen_arms.push(res.data.bandit_results[0].chosen_arms[n_counts - 1])
+                    app_.bandit_results[0].rewards.push(res.data.bandit_results[0].rewards[n_counts - 1])
+                    app_.bandit_results[0].cumulative_rewards.push(res.data.bandit_results[0].cumulative_rewards[n_counts - 1])
 
                     //update image
-                    n_counts = res.data.bandit_results[0].Chosen_arms.length
-                    chosen_treasure = res.data.bandit_results[0].Chosen_arms[n_counts - 1]
-                    if(res.data.bandit_results[0].Rewards[n_counts - 1] == 1){
+                    chosen_treasure = res.data.bandit_results[0].chosen_arms[n_counts - 1]
+                    if(res.data.bandit_results[0].rewards[n_counts - 1] == 1){
                         app_.treasures[chosen_treasure].link = "/resources/images/kaizoku_takara.png"
                     }else{
                         app_.treasures[chosen_treasure].link = "/resources/images/character_game_mimic.png"
@@ -100,6 +102,7 @@ var app_ = new Vue({
             console.log("clear")
             app_.bandit[0].counts = [0, 0, 0, 0, 0]
             app_.bandit[0].values = [0, 0, 0, 0, 0]
+            app_.bandit[0].arm_rewards = [0, 0, 0, 0, 0]
             app_.bandit_results[0].chosen_arms = []
             app_.bandit_results[0].rewards = []
             app_.bandit_results[0].cumulative_rewards = []

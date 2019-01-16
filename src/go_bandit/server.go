@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strconv"
 	"sync"
+	//"log"
 )
 
 type templateHandler struct {
@@ -36,7 +37,7 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	t.templ.Execute(w, nil)
 }
 
-func handler(w http.ResponseWriter, r *http.Request) {
+func Handler(w http.ResponseWriter, r *http.Request) {
 	//fmt.Fprint(w, "Hello World from Go.")
 
 	//Validate request
@@ -65,23 +66,21 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 	//parse json
 	var all_parameter allParameter
-	//var jsonBody map[string]interface{}
 	err = json.Unmarshal(body[:length], &all_parameter)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	//fmt.Fprint(w, all_parameter)
+	//log.Print(all_parameter)
 	var probs []float64
 	for _, para := range all_parameter.ArmPrameters {
 		probs = append(probs, para.Prob)
 	}
-
-	//Do_bandit(all_parameter.Bandit[0].N, probs, 0.5, 1, 500)
+	
 	all_parameter.BanditResults[0] = Oneshot_bandit(&all_parameter.Bandit[0], all_parameter.BanditResults[0], probs, 0.2)
+	
 	w.Header().Set("Content-Type", "application/json")
-
 	res, err := json.Marshal(all_parameter)
 	w.Write(res)
 
