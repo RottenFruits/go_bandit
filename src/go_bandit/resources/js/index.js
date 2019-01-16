@@ -78,7 +78,7 @@ var app_ = new Vue({
                     }else{
                         app_.treasures[chosen_treasure].link = "/resources/images/character_game_mimic.png"
                     }
-                    setTimeout(app_.image_initialize, 300)
+                    setTimeout(app_.image_initialize, 100)
                     
                 })
                 .catch(function (error) {
@@ -88,7 +88,7 @@ var app_ = new Vue({
         auto: function () {
             this.auto_flag = true
             this.start()
-            this.timer_id = setInterval(this.start, 750)
+            this.timer_id = setInterval(this.start, 300)
             console.log("auto")
         },
         stop: function () {
