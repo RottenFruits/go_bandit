@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"html/template"
 	"io"
-	"log"
 	"net/http"
 	"strconv"
 	"sync"
@@ -17,13 +16,15 @@ type templateHandler struct {
 	templ    *template.Template
 }
 
-type Result struct {
+type allParameter struct {
     N_arms     int  `json:"n_arms"`
-    Arm_probs   struct {
-        Prob      float64 `json:"prob"`
-        Key int `json:"key"`
-        Visible     bool `json:"visible"`
-	} `json:"arm_probs"`
+	Arm_probs []armPrameters `json:"arm_parameters"`	
+}
+
+type armPrameters struct {
+	Prob      float64 `json:"prob"`
+	Key int `json:"key"`
+	Visible     bool `json:"visible"`
 }
 
 func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -34,40 +35,10 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	t.templ.Execute(w, nil)
 }
 
-func test(w http.ResponseWriter, r *http.Request) {
-	var arms BernoulliArms
-
-	//log.Print(r)
-	probs := [2]float64{0.4, 0.8}
-	for _, p := range probs {
-		arms = append(arms, BernoulliArm{p})
-	}
-
-	bandit := Bandit{}
-	bandit.Initialize("EG", len(arms), 0.2)
-	a, b, c := bandit.test_algorithm(arms, 10, 10)
-	var res = banditResults{a, b, c}
-	log.Print(res)
-	//log.Print(b)
-	/*
-		res2, err := json.Marshal(res)
-		if err != nil {
-			panic(err)
-		}
-	*/
-	d, _ := json.Marshal(res)
-	fmt.Fprintf(w, string(d))
-
-	//w.Header().Set("Content-Type", "application/json")
-	//log.Print(res)
-	//fmt.Fprint(w, res2)
-}
-
 // リクエストを処理する関数
 func handler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "Hello World from Go.")
 
-	
 	//Validate request
 	if r.Method != "POST" {
 		w.WriteHeader(http.StatusBadRequest)
@@ -93,16 +64,15 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	//parse json
-	var jsonBody map[string]interface{}
-
-	err = json.Unmarshal(body[:length], &jsonBody)
+	var all_parameter allParameter
+	//var jsonBody map[string]interface{}
+	err = json.Unmarshal(body[:length], &all_parameter)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	log.Print(jsonBody)
-	log.Print(jsonBody)
 	
-	//test(w, r)
+	fmt.Println(all_parameter)
+	fmt.Fprint(w, all_parameter)	
 }
 
