@@ -39,20 +39,11 @@
         </div>
 
         <div>
-            <input type="checkbox" v-model="auto_mode_flag">
+            <input type="checkbox" v-model="auto_mode_flag" v-on:change="auto_mode_check">
             <label for="checkbox">Auto Mode</label>
         </div>
 
     </div>
-
-
-    <div id="app">
-        <div>
-            <p>RESULT</p>
-            <textarea v-model="result" cols="60" rows="10"></textarea>
-        </div>
-    </div>
-
     <script src="/resources/js/index.js"></script>
 </body>
 

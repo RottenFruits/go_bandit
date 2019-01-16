@@ -60,7 +60,7 @@ var app_ = new Vue({
                 .then(function (res) {
                     app.result = res.data
 
-                    //results
+                    //update results
                     for (i = 0; i < res.data.bandit[0].Counts.length; i++) {
                         app_.bandit[0].counts[i] = res.data.bandit[0].Counts[i]
                         app_.bandit[0].values[i] = res.data.bandit[0].Values[i]
@@ -92,6 +92,11 @@ var app_ = new Vue({
             app_.bandit_results[0].chosen_arms = []
             app_.bandit_results[0].rewards = []
             app_.bandit_results[0].cumulative_rewards = []
+        },
+        auto_mode_check: function(){
+            if(this.auto_mode_flag == false){
+                this.stop()
+            }
         },
         number_of_arms_select: function () {
             this.selected = Number(this.selected)
@@ -142,12 +147,5 @@ var app_ = new Vue({
                 this.treasures[4]['visible'] = true
             }
         }
-    }
-})
-
-var app = new Vue({
-    el: "#app",
-    data: {
-        result: "...."
     }
 })
