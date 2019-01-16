@@ -85,8 +85,10 @@ func (b Bandit) Test_algorithm(arms BernoulliArms, num_sims int, horizon int) ([
 func Do_bandit(n_arms int, probs []float64, epsilon float64, num_sims int, horizon int) {
 	var arms BernoulliArms
 
-	for _, p := range probs {
-		arms = append(arms, BernoulliArm{p})
+	for i, p := range probs {
+		if i < n_arms{
+			arms = append(arms, BernoulliArm{p})
+		}
 	}
 
 	bandit := Bandit{}

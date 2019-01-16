@@ -81,6 +81,6 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		probs = append(probs, para.Prob)
 	}
 
-	Do_bandit(n_arms, probs, 0.2, 10, 10)
+	Do_bandit(n_arms, probs, 0.2, 1, 100)
 
 }
