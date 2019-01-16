@@ -18,7 +18,7 @@ type templateHandler struct {
 
 type allParameter struct {
 	N_arms    int            `json:"n_arms"`
-	Arm_probs []armPrameters `json:"arm_parameters"`
+	ArmPrameters []armPrameters `json:"arm_parameters"`
 }
 
 type armPrameters struct {
@@ -72,6 +72,15 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println(all_parameter)
-	fmt.Fprint(w, all_parameter)
+	//fmt.Println(all_parameter)
+	//fmt.Fprint(w, all_parameter)
+
+	n_arms := all_parameter.N_arms
+	var probs []float64
+	for _, para := range all_parameter.ArmPrameters {
+		probs = append(probs, para.Prob)
+	}
+
+	Do_bandit(n_arms, probs, 0.2, 10, 10)
+
 }

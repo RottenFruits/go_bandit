@@ -46,7 +46,7 @@ func (b Bandit) Select_arm() int {
 	}
 }
 
-func (b *Bandit) update(chosen_arm int, reward float64) {
+func (b *Bandit) Update(chosen_arm int, reward float64) {
 	b.Counts[chosen_arm] = b.Counts[chosen_arm] + 1
 	n := float64(b.Counts[chosen_arm])
 	value := float64(b.Values[chosen_arm])
@@ -54,7 +54,7 @@ func (b *Bandit) update(chosen_arm int, reward float64) {
 	b.Values[chosen_arm] = new_value
 }
 
-func (b Bandit) test_algorithm(arms BernoulliArms, num_sims int, horizon int) ([]int, []float64, []float64) {
+func (b Bandit) Test_algorithm(arms BernoulliArms, num_sims int, horizon int) ([]int, []float64, []float64) {
 	chosen_arms := []int{}
 	rewards := []float64{}
 	cumulative_rewards := []float64{}
@@ -75,7 +75,7 @@ func (b Bandit) test_algorithm(arms BernoulliArms, num_sims int, horizon int) ([
 			} else {
 				cumulative_rewards = append(cumulative_rewards, cumulative_rewards[index-1]+reward)
 			}
-			b.update(chosen_arm, reward)
+			b.Update(chosen_arm, reward)
 		}
 	}
 
@@ -92,7 +92,7 @@ func Do_bandit(n_arms int, probs []float64, epsilon float64, num_sims int, horiz
 	bandit := Bandit{}
 	bandit.Initialize("EG", len(arms), epsilon)
 
-	a, b, c := bandit.test_algorithm(arms, num_sims, horizon)
+	a, b, c := bandit.Test_algorithm(arms, num_sims, horizon)
 	var res = banditResults{a, b, c}
 	log.Print(res)
 }
