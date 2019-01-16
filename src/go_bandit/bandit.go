@@ -107,8 +107,8 @@ func (b *Bandit) Test_algorithm_oneshot(arms BernoulliArms, br banditResults) ba
 	br.Chosen_arms = append(br.Chosen_arms, chosen_arm)
 	reward := arms[chosen_arm].Draw()
 	br.Rewards = append(br.Rewards, reward)
-	j := 0
-	if j == 0 {
+	times := len(br.Cumulative_rewards)
+	if times == 0 {
 		br.Cumulative_rewards = append(br.Cumulative_rewards, reward)
 	} else {
 		br.Cumulative_rewards = append(br.Cumulative_rewards, br.Cumulative_rewards[len(br.Cumulative_rewards)-1]+reward)

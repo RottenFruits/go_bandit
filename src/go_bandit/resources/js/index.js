@@ -35,6 +35,9 @@ var app_ = new Vue({
     methods: {
         start: function () {
             console.log("start")
+            //image setting
+            this.image_initialize()
+
             //prameter cast
             this.bandit[0]["n"] = Number(this.selected)
             for (i = 0; i < this.arm_parameters.length; i++) {
@@ -58,8 +61,6 @@ var app_ = new Vue({
             },
                 config)
                 .then(function (res) {
-                    app.result = res.data
-
                     //update results
                     for (i = 0; i < res.data.bandit[0].Counts.length; i++) {
                         app_.bandit[0].counts[i] = res.data.bandit[0].Counts[i]
@@ -69,7 +70,16 @@ var app_ = new Vue({
                     app_.bandit_results[0].rewards = res.data.bandit_results[0].Rewards
                     app_.bandit_results[0].cumulative_rewards = res.data.bandit_results[0].Cumulative_rewards
 
-
+                    //update image
+                    n_counts = res.data.bandit_results[0].Chosen_arms.length
+                    chosen_treasure = res.data.bandit_results[0].Chosen_arms[n_counts - 1]
+                    if(res.data.bandit_results[0].Rewards[n_counts - 1] == 1){
+                        app_.treasures[chosen_treasure].link = "/resources/images/kaizoku_takara.png"
+                    }else{
+                        app_.treasures[chosen_treasure].link = "/resources/images/character_game_mimic.png"
+                    }
+                    setTimeout(app_.image_initialize, 300)
+                    
                 })
                 .catch(function (error) {
                     console.log(error)
@@ -77,7 +87,8 @@ var app_ = new Vue({
         },
         auto: function () {
             this.auto_flag = true
-            this.timer_id = setInterval(this.start, 1000)
+            this.start()
+            this.timer_id = setInterval(this.start, 750)
             console.log("auto")
         },
         stop: function () {
@@ -97,6 +108,13 @@ var app_ = new Vue({
             if(this.auto_mode_flag == false){
                 this.stop()
             }
+        },
+        image_initialize: function(){
+            this.treasures[0].link = "/resources/images/kaizoku_takarabako.png"
+            this.treasures[1].link = "/resources/images/kaizoku_takarabako.png"
+            this.treasures[2].link = "/resources/images/kaizoku_takarabako.png"
+            this.treasures[3].link = "/resources/images/kaizoku_takarabako.png"
+            this.treasures[4].link = "/resources/images/kaizoku_takarabako.png"
         },
         number_of_arms_select: function () {
             this.selected = Number(this.selected)
