@@ -3,6 +3,7 @@ package main
 import (
 	"math/rand"
 	"time"
+	"log"
 )
 
 type Bandit struct {
@@ -79,4 +80,19 @@ func (b Bandit) test_algorithm(arms BernoulliArms, num_sims int, horizon int) ([
 	}
 
 	return chosen_arms, rewards, cumulative_rewards
+}
+
+func Do_bandit(n_arms int, probs []float64, epsilon float64, num_sims int, horizon int) {
+	var arms BernoulliArms
+
+	for _, p := range probs {
+		arms = append(arms, BernoulliArm{p})
+	}
+
+	bandit := Bandit{}
+	bandit.Initialize("EG", len(arms), epsilon)
+
+	a, b, c := bandit.test_algorithm(arms, num_sims, horizon)
+	var res = banditResults{a, b, c}
+	log.Print(res)
 }

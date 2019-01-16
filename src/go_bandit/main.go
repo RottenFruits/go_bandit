@@ -12,7 +12,7 @@ type banditResults struct {
 }
 
 func main() {
-	//test()
+	Do_bandit(2, []float64{0.1, 0.5}, 0.2, 10, 10)
 
 	http.HandleFunc("/a", handler)
 	//http.HandleFunc("/bandit", handler)
