@@ -108,35 +108,9 @@ var app_ = new Vue({
     }
 })
 
-
 var app = new Vue({
     el:"#app",　
     data:{　
-      url:"http://localhost:8080/a",
-      param:"{}",             
       result:"...."  
-    },
-    methods:{　  
-      post: function(){
-        config = {
-          headers:{
-            'X-Requested-With': 'XMLHttpRequest',
-            'Content-Type':'application / x-www-form-urlencoded'
-          },
-          withCredentials:true,
-        }
-　　　　　 
-        param = JSON.parse(this.param)
-
-        axios.post(this.url,param,config)
-        .then(function(res){
-          app.result = res.data
-          console.log(res)
-        })
-        .catch(function(res){
-　　　　　　app.result = res.data
-          console.log(res)
-        })
-      }
     }
   })
