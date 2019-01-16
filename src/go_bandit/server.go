@@ -17,14 +17,14 @@ type templateHandler struct {
 }
 
 type allParameter struct {
-    N_arms     int  `json:"n_arms"`
-	Arm_probs []armPrameters `json:"arm_parameters"`	
+	N_arms    int            `json:"n_arms"`
+	Arm_probs []armPrameters `json:"arm_parameters"`
 }
 
 type armPrameters struct {
-	Prob      float64 `json:"prob"`
-	Key int `json:"key"`
-	Visible     bool `json:"visible"`
+	Prob    float64 `json:"prob"`
+	Key     int     `json:"key"`
+	Visible bool    `json:"visible"`
 }
 
 func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -71,8 +71,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	
-	fmt.Println(all_parameter)
-	fmt.Fprint(w, all_parameter)	
-}
 
+	fmt.Println(all_parameter)
+	fmt.Fprint(w, all_parameter)
+}
