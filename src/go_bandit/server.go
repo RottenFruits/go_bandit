@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
+	//"fmt"
 	"html/template"
 	"io"
 	"net/http"
@@ -17,8 +17,9 @@ type templateHandler struct {
 }
 
 type allParameter struct {
-	N_arms       int            `json:"n_arms"`
-	ArmPrameters []armPrameters `json:"arm_parameters"`
+	Bandit        []Bandit        `json:"bandit"`
+	ArmPrameters  []armPrameters  `json:"arm_parameters"`
+	BanditResults []banditResults `json:"bandit_results"`
 }
 
 type armPrameters struct {
@@ -37,7 +38,7 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 // リクエストを処理する関数
 func handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Hello World from Go.")
+	//fmt.Fprint(w, "Hello World from Go.")
 
 	//Validate request
 	if r.Method != "POST" {
@@ -72,15 +73,18 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	//fmt.Println(all_parameter)
 	//fmt.Fprint(w, all_parameter)
-
-	n_arms := all_parameter.N_arms
 	var probs []float64
 	for _, para := range all_parameter.ArmPrameters {
 		probs = append(probs, para.Prob)
 	}
 
-	Do_bandit(n_arms, probs, 0.2, 1, 100)
+	//Do_bandit(all_parameter.Bandit[0].N, probs, 0.5, 1, 500)
+	all_parameter.BanditResults[0] = Oneshot_bandit(&all_parameter.Bandit[0], all_parameter.BanditResults[0], probs, 0.2)
+	w.Header().Set("Content-Type", "application/json")
 
+	res, err := json.Marshal(all_parameter)
+	w.Write(res)
+
+	//fmt.Fprint(w, res)
 }

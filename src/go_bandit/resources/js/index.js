@@ -16,19 +16,31 @@ var app_ = new Vue({
             { prob: 0.3, key: 2, visible: false },
             { prob: 0.3, key: 3, visible: false },
             { prob: 0.3, key: 4, visible: false }
+        ],
+        bandit_results: [
+            { chosen_arms: [], rewards: [], cumulative_rewards: [] }
+        ],
+        bandit: [{
+            algorithm: "EG",
+            epsilon: 0.8,
+            n: 2,
+            counts: [0, 0, 0, 0, 0],
+            values: [0, 0, 0, 0, 0]
+        }
         ]
+
     },
     methods: {
         start: function () {
             console.log("start")
-            this.start_flag = true
+            //this.start_flag = true
 
             //prameter cast
-            n_arms = Number(this.selected)
-            for(i = 0; i < this.arm_parameters.length; i++){
+            this.bandit[0]["n"] = Number(this.selected)
+            for (i = 0; i < this.arm_parameters.length; i++) {
                 this.arm_parameters[i]["prob"] = parseFloat(this.arm_parameters[i]["prob"])
             }
-            
+
             config = {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
@@ -40,13 +52,24 @@ var app_ = new Vue({
             url = "http://localhost:8080/a"
 
             axios.post(url, {
-                n_arms: n_arms,
-                arm_parameters: this.arm_parameters
+                bandit: this.bandit,
+                arm_parameters: this.arm_parameters,
+                bandit_results: this.bandit_results
             },
                 config)
                 .then(function (res) {
                     app.result = res.data
-                    console.log(res)
+
+                    //results
+                    for (i = 0; i < res.data.bandit[0].Counts.length; i++) {
+                        app_.bandit[0].counts[i] = res.data.bandit[0].Counts[i]
+                        app_.bandit[0].values[i] = res.data.bandit[0].Values[i]
+                    }
+                    app_.bandit_results[0].chosen_arms = res.data.bandit_results[0].Chosen_arms
+                    app_.bandit_results[0].rewards = res.data.bandit_results[0].Rewards
+                    app_.bandit_results[0].cumulative_rewards = res.data.bandit_results[0].Cumulative_rewards
+
+
                 })
                 .catch(function (error) {
                     console.log(error)

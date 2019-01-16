@@ -7,11 +7,11 @@ import (
 )
 
 type Bandit struct {
-	Algorithm string
-	Epsilon   float64
-	N         int
-	Counts    []int
-	Values    []float64
+	Algorithm string    `json:algorithm`
+	Epsilon   float64   `json:epsilon`
+	N         int       `json:n`
+	Counts    []int     `json:counts`
+	Values    []float64 `json:values`
 }
 
 type banditResults struct {
@@ -58,9 +58,11 @@ func (b *Bandit) Update(chosen_arm int, reward float64) {
 	value := float64(b.Values[chosen_arm])
 	new_value := float64(((n-1.0)/n)*value + (1.0/n)*reward)
 	b.Values[chosen_arm] = new_value
+
+	//log.Print(b)
 }
 
-func (b Bandit) Test_algorithm(arms BernoulliArms, num_sims int, horizon int) banditResults {
+func (b *Bandit) Test_algorithm(arms BernoulliArms, num_sims int, horizon int) banditResults {
 	var bandit_results banditResults
 
 	for i := 0; i < num_sims; i++ {
@@ -82,7 +84,6 @@ func (b Bandit) Test_algorithm(arms BernoulliArms, num_sims int, horizon int) ba
 			b.Update(chosen_arm, reward)
 		}
 	}
-
 	return bandit_results
 }
 
@@ -99,4 +100,30 @@ func Do_bandit(n_arms int, probs []float64, epsilon float64, num_sims int, horiz
 	bandit.Initialize("EG", len(arms), epsilon)
 	bandit_results := bandit.Test_algorithm(arms, num_sims, horizon)
 	log.Print(bandit_results)
+}
+
+func (b *Bandit) Test_algorithm_oneshot(arms BernoulliArms, br banditResults) banditResults {
+	chosen_arm := b.Select_arm()
+	br.Chosen_arms = append(br.Chosen_arms, chosen_arm)
+	reward := arms[chosen_arm].Draw()
+	br.Rewards = append(br.Rewards, reward)
+	j := 0
+	if j == 0 {
+		br.Cumulative_rewards = append(br.Cumulative_rewards, reward)
+	} else {
+		br.Cumulative_rewards = append(br.Cumulative_rewards, br.Cumulative_rewards[len(br.Cumulative_rewards)-1]+reward)
+	}
+	b.Update(chosen_arm, reward)
+	return br
+}
+
+func Oneshot_bandit(b *Bandit, br banditResults, probs []float64, epsilon float64) banditResults {
+	var arms BernoulliArms
+
+	for i, p := range probs {
+		if i < b.N {
+			arms = append(arms, BernoulliArm{p})
+		}
+	}
+	return b.Test_algorithm_oneshot(arms, br)
 }
