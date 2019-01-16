@@ -24,14 +24,25 @@
         </select>
 
         <div>
-            <template v-if="start_flag == false">
+            <template v-if="auto_mode_flag == false">
                 <button v-on:click="start">Start</button>
             </template>
             <template v-else>
-                <button v-on:click="stop">Stop</button>
+                <template v-if="auto_flag == false">
+                    <button v-on:click="auto">Auto</button>
+                </template>
+                <template v-else>
+                    <button v-on:click="stop">Stop</button>
+                </template>
             </template>
             <button v-on:click="clear">Clear</button>
         </div>
+
+        <div>
+            <input type="checkbox" v-model="auto_mode_flag">
+            <label for="checkbox">Auto Mode</label>
+        </div>
+
     </div>
 
 

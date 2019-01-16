@@ -36,7 +36,6 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	t.templ.Execute(w, nil)
 }
 
-// リクエストを処理する関数
 func handler(w http.ResponseWriter, r *http.Request) {
 	//fmt.Fprint(w, "Hello World from Go.")
 

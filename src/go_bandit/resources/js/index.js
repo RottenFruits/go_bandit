@@ -2,7 +2,9 @@ var app_ = new Vue({
     el: '#app_',
     data: {
         selected: 2,
-        start_flag: false,
+        auto_flag: false,
+        auto_mode_flag: false,
+        timer_id: null,
         treasures: [
             { state: 0, key: 0, link: "/resources/images/kaizoku_takarabako.png", visible: true },
             { state: 0, key: 1, link: "/resources/images/kaizoku_takarabako.png", visible: true },
@@ -33,8 +35,6 @@ var app_ = new Vue({
     methods: {
         start: function () {
             console.log("start")
-            //this.start_flag = true
-
             //prameter cast
             this.bandit[0]["n"] = Number(this.selected)
             for (i = 0; i < this.arm_parameters.length; i++) {
@@ -75,12 +75,23 @@ var app_ = new Vue({
                     console.log(error)
                 })
         },
+        auto: function () {
+            this.auto_flag = true
+            this.timer_id = setInterval(this.start, 1000)
+            console.log("auto")
+        },
         stop: function () {
-            this.start_flag = false
+            this.auto_flag = false
+            clearInterval(this.timer_id)
             console.log("stop")
         },
         clear: function () {
             console.log("clear")
+            app_.bandit[0].counts = [0, 0, 0, 0, 0]
+            app_.bandit[0].values = [0, 0, 0, 0, 0]
+            app_.bandit_results[0].chosen_arms = []
+            app_.bandit_results[0].rewards = []
+            app_.bandit_results[0].cumulative_rewards = []
         },
         number_of_arms_select: function () {
             this.selected = Number(this.selected)
