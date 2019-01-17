@@ -6,24 +6,55 @@
     <script src="https://unpkg.com/jquery"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
     <script src="https://unpkg.com/vue-chartjs/dist/vue-chartjs.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
 </head>
 
 <body>
     <div id="app_">
         <div>
+
             <img v-bind:src="treasure.link" width="100" v-show=treasure.visible v-for="treasure in treasures"></img>
         </div>
         <div>
             <input type="text" v-model:value="arm_parameter.prob" size="15" v-show=arm_parameter.visible v-for="arm_parameter in arm_parameters"></input>
+            <span>prob</span>
+        </div>
+        <div>
+            <input type="text" v-model:value="arm_parameter.counts" size="15" v-show=arm_parameter.visible v-for="arm_parameter in arm_parameters"></input>
+            <span>selected counts</span>
+        </div>
+        <div>
+            <input type="text" v-model:value="arm_parameter.arm_rewards" size="15" v-show=arm_parameter.visible v-for="arm_parameter in arm_parameters"></input>
+            <span>reward counts</span>
+        </div>
+        <div>
+            <input type="text" v-model:value="arm_parameter.cvr" size="15" v-show=arm_parameter.visible v-for="arm_parameter in arm_parameters"></input>
+            <span>cvr</span>
+        </div>
+        <div>
+            <input type="text" v-model:value="arm_parameter.values" size="15" v-show=arm_parameter.visible v-for="arm_parameter in arm_parameters"></input>
+            <span>values</span>
+        </div>
+        <div>
+            <span>Trials</span>
+            <input type="text" v-model:value="trials" size="5"></input>
+            <span>Cumulative Rewards</span>
+            <input type="text" v-model:value="cumulative_rewards" size="5"></input>
         </div>
 
-        <span>Number of arms</span>
-        <select v-model="selected" v-on:change="number_of_arms_select">
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-        </select>
+        <div>
+            <span>Number of arms</span>
+            <select v-model="selected" v-on:change="number_of_arms_select">
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+
+            <span>Epsilon</span>
+            <input type="text" v-model:value="bandit[0].epsilon" size="5"></input>
+        </div>
 
         <div>
             <template v-if="auto_mode_flag == false">
@@ -44,9 +75,12 @@
             <input type="checkbox" v-model="auto_mode_flag" v-on:change="auto_mode_check">
             <label for="checkbox">Auto Mode</label>
         </div>
-
-
     </div>
+
+    <div id="graph">
+        <!-- <bar ref="g1" :width="200" :height="200" :data1="data1" :data2="data2"></bar> -->
+    </div>
+
     <script src="/resources/js/index.js"></script>
 </body>
 
