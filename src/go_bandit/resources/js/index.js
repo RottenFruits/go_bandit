@@ -5,8 +5,8 @@ var app_ = new Vue({
         auto_flag: false,
         auto_mode_flag: false,
         timer_id: null,
-        trials:0,
-        cumulative_rewards:0,
+        trials: 0,
+        cumulative_rewards: 0,
         treasures: [
             { state: 0, key: 0, link: "/resources/images/kaizoku_takarabako.png", visible: true },
             { state: 0, key: 1, link: "/resources/images/kaizoku_takarabako.png", visible: true },
@@ -140,53 +140,17 @@ var app_ = new Vue({
         },
         number_of_arms_select: function () {
             this.selected = Number(this.selected)
-
-            if (this.selected == 2) {
-                this.arm_parameters[0]['visible'] = true
-                this.arm_parameters[1]['visible'] = true
-                this.arm_parameters[2]['visible'] = false
-                this.arm_parameters[3]['visible'] = false
-                this.arm_parameters[4]['visible'] = false
-                this.treasures[0]['visible'] = true
-                this.treasures[1]['visible'] = true
-                this.treasures[2]['visible'] = false
-                this.treasures[3]['visible'] = false
-                this.treasures[4]['visible'] = false
-            } else if (this.selected == 3) {
-                this.arm_parameters[0]['visible'] = true
-                this.arm_parameters[1]['visible'] = true
-                this.arm_parameters[2]['visible'] = true
-                this.arm_parameters[3]['visible'] = false
-                this.arm_parameters[4]['visible'] = false
-                this.treasures[0]['visible'] = true
-                this.treasures[1]['visible'] = true
-                this.treasures[2]['visible'] = true
-                this.treasures[3]['visible'] = false
-                this.treasures[4]['visible'] = false
-            } else if (this.selected == 4) {
-                this.arm_parameters[0]['visible'] = true
-                this.arm_parameters[1]['visible'] = true
-                this.arm_parameters[2]['visible'] = true
-                this.arm_parameters[3]['visible'] = true
-                this.arm_parameters[4]['visible'] = false
-                this.treasures[0]['visible'] = true
-                this.treasures[1]['visible'] = true
-                this.treasures[2]['visible'] = true
-                this.treasures[3]['visible'] = true
-                this.treasures[4]['visible'] = false
-            } else if (this.selected == 5) {
-                this.arm_parameters[0]['visible'] = true
-                this.arm_parameters[1]['visible'] = true
-                this.arm_parameters[2]['visible'] = true
-                this.arm_parameters[3]['visible'] = true
-                this.arm_parameters[4]['visible'] = true
-                this.treasures[0]['visible'] = true
-                this.treasures[1]['visible'] = true
-                this.treasures[2]['visible'] = true
-                this.treasures[3]['visible'] = true
-                this.treasures[4]['visible'] = true
+            for (i = 0; i < this.arm_parameters.length; i++) {
+                if (i < this.selected) {
+                    this.arm_parameters[i]['visible'] = true
+                    this.treasures[i]['visible'] = true
+                } else {
+                    this.arm_parameters[i]['visible'] = false
+                    this.treasures[i]['visible'] = false
+                }
             }
         }
+
     }
 })
 
@@ -266,7 +230,5 @@ Vue.component('bar', {
         }
     }
 })
-
-
 
 new Vue({ el: '#graph' })
