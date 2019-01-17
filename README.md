@@ -16,12 +16,12 @@ git clone https://github.com/RottenFruits/go_bandit.git
 cd go_bandit
 docker build -t go_bandit -f Dockerfile/Dockerfile .
 ```
-- container login
+- login container
 ```bash
 docker run -p 8080:8080 -it --name go_bandit go_bandit /bin/bash
 ```
 
-- app start
+- start app
 ```bash
 cd src/go_bandit
 go run *.go
