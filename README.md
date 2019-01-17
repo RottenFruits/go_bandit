@@ -6,10 +6,18 @@ This is app for deep understanding of bandit algorithm.
 # Install
 
 ```bash
-git
+git clone https://github.com/RottenFruits/go_bandit.git
 ```
 
 # Usage
+```bash
+cd go_bandit
+docker build -t go_bandit -f Dockerfile/Dockerfile .
+docker run -it --name go_bandit go_bandit /bin/bash
+cd src/go_bandit
+go run *.go
+```
+
 
 
 
