@@ -2,13 +2,13 @@ package main
 
 import (
 	"encoding/json"
-	//"fmt"
 	"html/template"
 	"io"
 	"net/http"
 	"strconv"
 	"sync"
 	//"log"
+	//"fmt"
 )
 
 type templateHandler struct {
@@ -18,9 +18,8 @@ type templateHandler struct {
 }
 
 type allParameter struct {
-	Bandit        []Bandit        `json:"bandit"`
+	Bandit        Bandit        `json:"bandit"`
 	ArmPrameters  []armPrameters  `json:"arm_parameters"`
-	BanditResults []banditResults `json:"bandit_results"`
 }
 
 type armPrameters struct {
@@ -38,8 +37,6 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
-	//fmt.Fprint(w, "Hello World from Go.")
-
 	//Validate request
 	if r.Method != "POST" {
 		w.WriteHeader(http.StatusBadRequest)
@@ -78,7 +75,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		probs = append(probs, para.Prob)
 	}
 	
-	all_parameter.BanditResults[0] = Oneshot_bandit(&all_parameter.Bandit[0], all_parameter.BanditResults[0], probs, 0.2)
+	Oneshot_bandit(&all_parameter.Bandit, probs, 0.2)
 	
 	w.Header().Set("Content-Type", "application/json")
 	res, err := json.Marshal(all_parameter)
