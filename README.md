@@ -1,7 +1,7 @@
 # go_bandit
 
 This is app for deep understanding of bandit algorithm.
-
+![demo](https://github.com/RottenFruits/go_bandit/blob/master/demo.gif)
 
 # Install
 
