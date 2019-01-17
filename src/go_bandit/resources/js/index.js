@@ -21,19 +21,19 @@ var app_ = new Vue({
             { prob: 0.3, key: 3, visible: false, counts: 0, values: 0, arm_rewards: 0, cvr: 0 },
             { prob: 0.3, key: 4, visible: false, counts: 0, values: 0, arm_rewards: 0, cvr: 0 }
         ],
-        bandit: 
-            {
-                algorithm: "EG",
-                epsilon: 0.8,
-                n: 2,
-                counts: [0, 0, 0, 0, 0],
-                values: [0, 0, 0, 0, 0],
-                arm_rewards: [0, 0, 0, 0, 0],
-                chosen_arms: [], 
-                rewards: [], 
-                cumulative_rewards: []
-            }
-        
+        bandit:
+        {
+            algorithm: "EG",
+            epsilon: 0.8,
+            n: 2,
+            counts: [0, 0, 0, 0, 0],
+            values: [0, 0, 0, 0, 0],
+            arm_rewards: [0, 0, 0, 0, 0],
+            chosen_arms: [],
+            rewards: [],
+            cumulative_rewards: []
+        }
+
     },
     methods: {
         start: function () {
@@ -152,82 +152,3 @@ var app_ = new Vue({
 
     }
 })
-
-var graph = new Vue({
-    el: '#graph',
-    data: {
-        data1: 40,
-        data2: 80
-    }
-})
-
-Vue.component('bar', {
-    mixins: [VueChartJs.Bar, VueChartJs.mixins.reactiveData],
-    data: function () {
-        return {
-            options: {
-                scales: {
-                    yAxes: [
-                        {
-                            ticks: {
-                                min: 0,
-                                max: 100,
-                            }
-                        },
-                    ]
-                },
-                responsive: false,
-                data1: {
-                    type: Number,
-                    required: true,
-                },
-                data2: {
-                    type: Number,
-                    required: true,
-                }
-            },
-        }
-    },
-    props: {
-        data1: {
-            type: Number,
-            required: true,
-        },
-        data2: {
-            type: Number,
-            required: true,
-        }
-    },
-    watch: {
-        data1: function () {
-            this.updateChartData()
-        },
-        data2: function () {
-            this.updateChartData()
-        }
-    },
-    methods: {
-        updateChartData() {
-            const newChartData = Object.assign({}, this.chartData)
-            newChartData.datasets[0].data = [this.data1]
-            newChartData.datasets[1].data = [this.data2]
-            this.chartData = newChartData
-        },
-    },
-    mounted: function () {
-        this.chartData = {
-            datasets: [
-                {
-                    label: "data1",
-                    data: [this.data1],
-                },
-                {
-                    label: "data2",
-                    data: [this.data2],
-                },
-            ],
-        }
-    }
-})
-
-new Vue({ el: '#graph' })

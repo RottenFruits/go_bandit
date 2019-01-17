@@ -18,8 +18,8 @@ type templateHandler struct {
 }
 
 type allParameter struct {
-	Bandit        Bandit        `json:"bandit"`
-	ArmPrameters  []armPrameters  `json:"arm_parameters"`
+	Bandit       Bandit         `json:"bandit"`
+	ArmPrameters []armPrameters `json:"arm_parameters"`
 }
 
 type armPrameters struct {
@@ -74,9 +74,9 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	for _, para := range all_parameter.ArmPrameters {
 		probs = append(probs, para.Prob)
 	}
-	
+
 	Oneshot_bandit(&all_parameter.Bandit, probs, 0.2)
-	
+
 	w.Header().Set("Content-Type", "application/json")
 	res, err := json.Marshal(all_parameter)
 	w.Write(res)

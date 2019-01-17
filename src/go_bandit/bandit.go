@@ -7,14 +7,14 @@ import (
 )
 
 type Bandit struct {
-	Algorithm string    `json:"algorithm"`
-	Epsilon   float64   `json:"epsilon"`
-	N         int       `json:"n"`
-	Counts    []int     `json:"counts"`
-	Values    []float64 `json:"values"`
-	ArmRewards []float64 `json:"arm_rewards"`
+	Algorithm         string    `json:"algorithm"`
+	Epsilon           float64   `json:"epsilon"`
+	N                 int       `json:"n"`
+	Counts            []int     `json:"counts"`
+	Values            []float64 `json:"values"`
+	ArmRewards        []float64 `json:"arm_rewards"`
 	ChosenArms        []int     `json:"chosen_arms"`
-	Rewards            []float64 `json:"rewards"`
+	Rewards           []float64 `json:"rewards"`
 	CumulativeRewards []float64 `json:"cumulative_rewards"`
 }
 
@@ -72,7 +72,7 @@ func (b *Bandit) Update(chosen_arm int, reward float64) {
 	//log.Print(b)
 }
 
-func (b *Bandit) Test_algorithm_oneshot(arms BernoulliArms){
+func (b *Bandit) Test_algorithm_oneshot(arms BernoulliArms) {
 	chosen_arm := b.Select_arm()
 	b.ChosenArms = append(b.ChosenArms, chosen_arm)
 	reward := arms[chosen_arm].Draw()
@@ -86,7 +86,7 @@ func (b *Bandit) Test_algorithm_oneshot(arms BernoulliArms){
 	b.Update(chosen_arm, reward)
 }
 
-func Oneshot_bandit(b *Bandit, probs []float64, epsilon float64){
+func Oneshot_bandit(b *Bandit, probs []float64, epsilon float64) {
 	var arms BernoulliArms
 
 	for i, p := range probs {
@@ -96,7 +96,6 @@ func Oneshot_bandit(b *Bandit, probs []float64, epsilon float64){
 	}
 	b.Test_algorithm_oneshot(arms)
 }
-
 
 func (b *Bandit) Test_algorithm(arms BernoulliArms, num_sims int, horizon int) {
 	for i := 0; i < num_sims; i++ {
