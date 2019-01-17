@@ -56,7 +56,7 @@ var app_ = new Vue({
                 withCredentials: true,
             }
 
-            url = "http://localhost:8080/a"
+            url = "http://localhost:8080/oneshot"
 
             axios.post(url, {
                 bandit: this.bandit,
