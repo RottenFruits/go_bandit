@@ -23,6 +23,10 @@ func (b *Bandit) Initialize(algorithm string, n int, epsilon float64) {
 	b.Epsilon = epsilon
 	b.N = n
 
+	b.ChosenArms = []int{}
+	b.Rewards = []float64{}
+	b.CumulativeRewards = []float64{}
+
 	for i := 0; i < b.N; i++ {
 		b.Counts = append(b.Counts, 0)
 		b.Values = append(b.Values, 0)
@@ -33,6 +37,10 @@ func (b *Bandit) Initialize(algorithm string, n int, epsilon float64) {
 func (b *Bandit) Clear() {
 	b.Counts = []int{}
 	b.Values = []float64{}
+
+	b.ChosenArms = []int{}
+	b.Rewards = []float64{}
+	b.CumulativeRewards = []float64{}
 
 	for i := 0; i < b.N; i++ {
 		b.Counts = append(b.Counts, 0)
