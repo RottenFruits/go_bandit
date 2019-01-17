@@ -1,3 +1,20 @@
+# go_bandit
+
+This is app for deep understanding of bandit algorithm.
+
+
+# Install
+
+```bash
+git
+```
+
+# Usage
+
+
+
+
+
 docker build -t go_bandit -f Dockerfile/Dockerfile .
 
 docker run -it --name go_bandit go_bandit /bin/bash
